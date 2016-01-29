@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>hello phaser!</title>
+        <script src="./js/phaser.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            window.onload = function() {
+                var game = new Phaser.Game(800, 600, Phaser.CANVAS, '', {preload: preload, create: create, update: update});
+                var leftKey;
+                var rightKey;
+                var spaceKey;
+                var isAttacking = false;
+                var timer;
+                var mySpells = [];
+                var enemySpells = [];
+                
+                function preload () {
+                }
+
+                function create () {
+                    game.stage.backgroundColor = '#124184';
+
+                    game.add.text(5, 5, 'Use arrow keys to move.', { fill: '#ffffff', font: '14pt Arial' });
+                    
+                    // Keys to record
+                    this.leftKey = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+                    this.rightKey = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+                    this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+                    // Stop the following keys from propagating up to the browser
+                    game.input.keyboard.addKeyCapture([ Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR ]);
+                    timer = game.time.create(false);
+
+                    //  Set a TimerEvent to occur after 2 seconds
+                    timer.loop(1000, this.addEnemySpell, this);
+                }
+                
+                function update(){
+                    if (this.leftKey.justDown){
+                        console.log("Fire");
+                        mySpells.push("Fire");
+                        isAttacking = true;
+                    }else if(this.rightKey.justDown){
+                        console.log("Water");
+                        mySpells.push("Water");
+                        isAttacking = true;
+                    }else if(this.spaceKey.justDown){
+                        console.log("Earth");
+                        mySpells.push("Earth");
+                        isAttacking = true;
+                    }else if(isAttacking){
+                        //timer.start();
+                    }
+                    
+                    if(mySpells.length > 2){
+                        console.log("Using: ");
+                        for(var i = 0; i < mySpells.length; i++){
+                            console.log(mySpells[i]);
+                        }
+                        mySpells = [];
+                    }
+                    
+                    if(enemySpells.length > 2){
+                        console.log("The enemy used: ");
+                        for(var j = 0; j < mySpells.length; j++){
+                            console.log(enemySpells[j]);
+                        }
+                        console.log("End enemy spells");
+                        isAttacking = false;
+                        enemySpells = [];
+                        timer.stop();
+                    }
+                }
+                
+                function addEnemySpell(testingVar){
+                    enemySpells.push("Water");
+                }
+            };
+        </script>
+    </body>
+</html>
