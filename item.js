@@ -1,7 +1,6 @@
 /*
 *   Description: This file sets up the item class used in the game.
-*   Usage: ITEM takes arguments as an object of key: word pairs.
-*   Author: Darren Kearney
+*   Usage: ITEM takes arguments as an object of key: word pairs
 */
 
 ITEM = function (kwargs) {
