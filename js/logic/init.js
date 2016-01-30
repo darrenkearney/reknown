@@ -1,6 +1,20 @@
+var map;
+var players;
+var player;
+var enemy;
+var walls;
+
+function preloadAssets(){
+    game.load.image('map', 'assets/map.png');
+    game.load.image('player', 'assets/bat.png');
+    game.load.image('enemy', 'assets/items/heart.png');
+}
+
 function createGame(){
     game.stage.backgroundColor = '#124184';
-
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    
+    game.world.setBounds(0, 0, 4096, 3128);
     game.add.text(5, 5, 'Use arrow keys to move.', { fill: '#ffffff', font: '14pt Arial' });
 
     // Keys to record
@@ -14,9 +28,17 @@ function createGame(){
     game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN]);
     
     timer = game.time.create(false);
-    game.add.sprite(0, 0, 'map');
     
-    player = game.add.sprite(32, game.world.height - 150, 'player');
+    //  Our tiled scrolling background
+    map = game.add.tileSprite(0, 0, 4096, 3128, 'map');
+
+    player = game.add.sprite(155, game.world.height - 200, 'player');
+    
+    enemy = game.add.sprite(game.world.width - 200, game.world.height - 350, 'enemy');
+    enemy.collideWorldBounds = true;
+    enemy.enableBody = true;
+    
+    game.physics.arcade.enable(player);
     
     currentFighter = getRandomFighter(fighters);
     

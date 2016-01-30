@@ -1,3 +1,12 @@
+var isPlayerAttacking = false;
+var isFightStarted = false;
+var currentFighter;
+var fighters = [new CHARACTER(ENEMIES.BASIC), new CHARACTER(ENEMIES.SLOW), new CHARACTER(ENEMIES.LUCKY)];
+
+function loadBattle(){
+    console.log("LoadingBattle");
+}
+
 function battleLogic(){
     if (this.leftKey.justDown){
         console.log("Fire");
