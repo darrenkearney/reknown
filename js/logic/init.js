@@ -8,10 +8,8 @@ function preloadAssets(view){
     //  Load Battle Assets 
     if (view === "BATTLE"){
         game.load.image('battleBackground',         './assets/background/fightback-water.jpg');
-        game.load.spritesheet('player1Spritesheet', './assets/characters/wizfix.png', 300, 400);
-        game.load.spritesheet('player2Spritesheet', './assets/characters/wizfix.png', 300, 400);
-        game.load.spritesheet('player1DeathSpritesheet', './assets/characters/wizdeath.png', 400, 400);
-        game.load.spritesheet('player2DeathSpritesheet', './assets/characters/wizdeath.png', 400, 400);
+        game.load.spritesheet('player1Spritesheet', './assets/characters/player.png', 300, 400);
+        game.load.spritesheet('player2Spritesheet', './assets/characters/player.png', 300, 400);
         game.load.image('player1EnergyUIAsset',     './assets/ui/energy.png');
         game.load.image('player1HiltUIAsset',       './assets/ui/hilt.png');
         game.load.image('player1OutlineUIAsset',    './assets/ui/outline.png');
@@ -98,13 +96,8 @@ function createGame(view){
         player1Sprite.animations.add('attackLight', [10,11,12,13,14,15,16,17,18,19], 10, true);
         player1Sprite.animations.add('attackHeavy', [26,27,28,29,30,31,32,33,34,35,36,37,38,37,36,13,14,15,16,17,18,19], 10, true);
         player1Sprite.animations.add('hurt', [20,21,22,23,24,25], 5, true);
-        //player1Sprite.animations.add('death', [20,21,22,23,24,25], 5, true); // using same frames as hurt in leue of death animation
-        // extra spritesheet for death
-        player1DeathSprite = game.add.sprite(120, 170, 'player1DeathSpritesheet');
-        player1DeathSprite.animations.add('death', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24], 10, false);
-        
-        
-        
+        player1Sprite.animations.add('death', [20,21,22,23,24,25], 5, true); // using same frames as hurt in leue of death animation
+
         // Add enemy sprite (Temporarily using player1 spritesheet until new assets are imported)
         player2Sprite = game.add.sprite(760, 140, 'player2Spritesheet');
         // player 2 animations
@@ -112,13 +105,12 @@ function createGame(view){
         player2Sprite.animations.add('attackLight', [10,11,12,13,14,15,16,17,18,19], 10, true);
         player2Sprite.animations.add('attackHeavy', [26,27,28,29,30,31,32,33,34,35,36,37,38,37,36,13,14,15,16,17,18,19], 10, true);
         player2Sprite.animations.add('hurt', [20,21,22,23,24,25], 5, true);
-        //player2Sprite.animations.add('death', [20,21,22,23,24,25], 5, true); // using same frames as hurt in leue of death animation
+        player2Sprite.animations.add('death', [20,21,22,23,24,25], 5, true); // using same frames as hurt in leue of death animation
         // Flip sprite on x-axis
         player2Sprite.anchor.setTo(1,0); // set sprite anchor so we can flip
         player2Sprite.scale.setTo(-1,1); // flip enemy sprite
         player2Sprite.tint = 0xEE5511; // Set tint. uses HEX value, default is 0xFFFFFF (0xRRGGBB when RR = Red, GG = Green, BB = Blue)
-        player2DeathSprite = game.add.sprite(730, 140, 'player1DeathSpritesheet');
-        player2DeathSprite.animations.add('death', [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24], 10, false);
+
 
         /*******************
         *   UI Elements
@@ -210,9 +202,11 @@ function createGame(view){
         player1.hitPointsUI = player1EnergyUI;
         player2.hitPointsUI = player2EnergyUI;
 
+        setTextForSpells();
+
         //  Set a TimerEvent to occur after 2 seconds
         // Used for the battle timer
-        timer.loop(600, addEnemySpell, this, player2);
+        timer.loop(2000, addEnemySpell, this, player2);
     } else if (view === "MAP") {
         
         /**********************************************************************
@@ -263,6 +257,40 @@ function createGame(view){
 
 function getRandomFighter(fighters) {
     return fighters[Math.floor(Math.random() * fighters.length)];
+}
+
+function addText(x, y, letter){
+    return game.add.text(x, y, letter, {
+        font: "3em Arial",
+        fill: "#ff0044",
+        align: "center"
+    });
+}
+
+function setTextForSpells(){
+    this.attackNumXCoOrdinates = [200, 295, 390, 875, 970, 1070];
+    this.yCoOrdinates = game.world.height - 70;
+    this.yCoOrdinatesForSpells = 0;
+    
+    // Player 1
+    addText(150, this.yCoOrdinates, "A");
+    addText(250, this.yCoOrdinates, "E");
+    addText(345, this.yCoOrdinates, "F");
+    addText(440, this.yCoOrdinates, "W");
+    
+    // Player 2
+    addText(825, this.yCoOrdinates, "⇦");
+    addText(925, this.yCoOrdinates, "⇧");
+    addText(1020, this.yCoOrdinates, "⇩");
+    addText(1120, this.yCoOrdinates, "⇨");
+    
+    //TextForSpellsUsed
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[0], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[1], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[2], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[3], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[4], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[5], this.yCoOrdinatesForSpells, ""));
 }
 
 // Todo
