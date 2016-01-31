@@ -115,8 +115,8 @@ function createGame(){
     player2OutlineUI.scale.setTo(-0.4,0.4);
     
     // Add cropRect to crop the HP/energy bar for visually lowering hp
-//    energyUICropRect1 = new Phaser.Rectangle(0, 0, 200, 200);
-//    energyUICropRect2 = new Phaser.Rectangle(550, 0, 400, 200);
+    energyUICropRect1 = new Phaser.Rectangle(0, 0, 200, 200);
+    energyUICropRect2 = new Phaser.Rectangle(550, 0, 400, 200);
 //    console.log("crop x : " + (player2EnergyUI.x+player2EnergyUI.width));
     // Apply crop to image
     //player1EnergyUI.crop(energyUICropRect1);
