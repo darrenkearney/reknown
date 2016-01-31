@@ -75,9 +75,6 @@ function battleLogic() {
         }
         // Process attack
         processAttack(playerSpellCode, player1, player1Sprite, player2, player2Sprite);
-        textForSpellsUsed[0].setText("");
-        textForSpellsUsed[1].setText("");
-        textForSpellsUsed[2].setText("");
     }
     
     // When Player reduces Enemy HP to 0 stop fight
@@ -95,10 +92,6 @@ function battleLogic() {
         }
         // Process attack
         processAttack(enemySpellCode, player2, player2Sprite, player1, player1Sprite);
-        
-        textForSpellsUsed[3].setText("");
-        textForSpellsUsed[4].setText("");
-        textForSpellsUsed[5].setText("");
     }
     
     // fill hp bars at start!

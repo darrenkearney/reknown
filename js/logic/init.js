@@ -8,8 +8,8 @@ function preloadAssets(view){
     //  Load Battle Assets 
     if (view === "BATTLE"){
         game.load.image('battleBackground',         './assets/background/fightback-water.jpg');
-        game.load.spritesheet('player1Spritesheet', './assets/characters/player.png', 300, 400);
-        game.load.spritesheet('player2Spritesheet', './assets/characters/player.png', 300, 400);
+        game.load.spritesheet('player1Spritesheet', './assets/characters/wizfix.png', 300, 400);
+        game.load.spritesheet('player2Spritesheet', './assets/characters/wizfix.png', 300, 400);
         game.load.image('player1EnergyUIAsset',     './assets/ui/energy.png');
         game.load.image('player1HiltUIAsset',       './assets/ui/hilt.png');
         game.load.image('player1OutlineUIAsset',    './assets/ui/outline.png');
@@ -202,8 +202,6 @@ function createGame(view){
         player1.hitPointsUI = player1EnergyUI;
         player2.hitPointsUI = player2EnergyUI;
 
-        setTextForSpells();
-
         //  Set a TimerEvent to occur after 2 seconds
         // Used for the battle timer
         timer.loop(2000, addEnemySpell, this, player2);
@@ -265,32 +263,6 @@ function addText(x, y, letter){
         fill: "#ff0044",
         align: "center"
     });
-}
-
-function setTextForSpells(){
-    this.attackNumXCoOrdinates = [200, 295, 390, 875, 970, 1070];
-    this.yCoOrdinates = game.world.height - 70;
-    this.yCoOrdinatesForSpells = 0;
-    
-    // Player 1
-    addText(150, this.yCoOrdinates, "A");
-    addText(250, this.yCoOrdinates, "E");
-    addText(345, this.yCoOrdinates, "F");
-    addText(440, this.yCoOrdinates, "W");
-    
-    // Player 2
-    addText(825, this.yCoOrdinates, "⇦");
-    addText(925, this.yCoOrdinates, "⇧");
-    addText(1020, this.yCoOrdinates, "⇩");
-    addText(1120, this.yCoOrdinates, "⇨");
-    
-    //TextForSpellsUsed
-    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[0], this.yCoOrdinatesForSpells, ""));
-    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[1], this.yCoOrdinatesForSpells, ""));
-    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[2], this.yCoOrdinatesForSpells, ""));
-    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[3], this.yCoOrdinatesForSpells, ""));
-    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[4], this.yCoOrdinatesForSpells, ""));
-    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[5], this.yCoOrdinatesForSpells, ""));
 }
 
 // Todo
