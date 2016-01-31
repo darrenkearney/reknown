@@ -2,7 +2,7 @@ var isPlayerAttacking = false;
 var isFightStarted = false;
 var isFightFinished = false;
 var startHealthUI = true;
-var spellTypes = ['E','F','W','A']; // Used for enemy random spell selection
+var spellTypes = ['E', 'F', 'W', 'A']; // Used for enemy random spell selection
 var spellNames = {'E': 'Earth', 'F': 'Fire', 'W': 'Water', 'A': 'Air'};
 
 // Instantiate player objects
@@ -15,29 +15,29 @@ var spellEmitter;
 
 
 // Main
-function battleLogic(){
+function battleLogic() {
     // Process animations
     animationChecks();
     
     // Human Player Input for battle
-    if(isFightFinished === false){
+    if (isFightFinished === false) {
         // key events
-        if (this.leftKey.justDown){
+        if (this.leftKey.justDown) {
             console.log("Water");
             player1.spells.push("W");
             console.log(player1.spells);
             isPlayerAttacking = true;
-        }else if(this.rightKey.justDown){
+        } else if (this.rightKey.justDown) {
             console.log("Fire");
             player1.spells.push("F");
             console.log(player1.spells);
             isPlayerAttacking = true;
-        }else if(this.downKey.justDown){
+        } else if (this.downKey.justDown) {
             console.log("Earth");
             player1.spells.push("E");
             console.log(player1.spells);
             isPlayerAttacking = true;
-        }else if(this.upKey.justDown){
+        } else if (this.upKey.justDown) {
             console.log("Air");
             player1.spells.push("A");
             console.log(player1.spells);
@@ -47,7 +47,7 @@ function battleLogic(){
 
     // Ready? Fight!
     // Player setting first spell starts the timer
-    if(isPlayerAttacking && !isFightStarted){
+    if (isPlayerAttacking && !isFightStarted) {
         console.log(player2);
         isFightStarted = true;
         timer.start();
@@ -106,7 +106,7 @@ function battleLogic(){
         player1.hitPointsUI.updateCrop();
         energyUICropRect2.width = player2.hitPointsUI.width;
         player2.hitPointsUI.updateCrop();
-    }    
+    }
 }
 
 function processAttack(spellCode, attacker, attackerSprite, defender, defenderSprite){
