@@ -132,16 +132,6 @@ function createGame(){
     player1SpellFire.scale.setTo(0.2,0.2);
     player1SpellWater.scale.setTo(0.2,0.2);
     
-    // UI Particles
-    var emitter1Air = game.add.emitter(160, 600, 500);
-    emitter1Air.makeParticles('softWhiteParticle');
-    emitter1Air.setRotation(0, 0);
-    emitter1Air.setAlpha(0.6, 0, 1900);
-    emitter1Air.setScale(0.5, 0.5);
-    emitter1Air.gravity = -80;
-    //	false means don't explode all the sprites at once, but instead release at a rate of one particle per 100ms
-    //	The 5000 value is the lifespan of each particle before it's killed
-    emitter1Air.start(false, 2000, 200);
     
     // Player 2 Spell UI
     var player2SpellAir         = game.add.sprite(780, 550,'spellAirAsset');
@@ -154,21 +144,39 @@ function createGame(){
     player2SpellWater.scale.setTo(0.2,0.2);
     
     // UI Particles
-    var emitter2Air = game.add.emitter(840, 600, 500);
+    var x, y, max;
+    function emitterInitter( emitter, tint ) {
+        lifespan     = game.rnd.integerInRange(2000,3000);
+        
+        emitter.makeParticles('softWhiteParticle');
+        emitter.setRotation(0, 0);
+        emitter.setAlpha(0.6, 0, (lifespan -100));
+        emitter.setScale(0.5, 0.5);
+        emitter.gravity = -80;
+        
+        frequency    = game.rnd.integerInRange(100,150);
+        emitter.start(false, lifespan, frequency);
+        
+        if (tint !== undefined ) {
+            emitter.forEach(function(particle) {
+                // tint every particle to HEX value
+                particle.tint = tint;
+            });
+        }
+    }
     
-    emitter2Air.makeParticles('softWhiteParticle');
+    // Player 1 Spell UI Particles Init
+    var emitter1Air     = game.add.emitter(160, 600, 500 ); emitterInitter( emitter1Air, 0xFFFFFF );
+    var emitter1Earth   = game.add.emitter(260, 600, 500);  emitterInitter( emitter1Earth, 0x00DDDD );
+    var emitter1Fire    = game.add.emitter(360, 600, 500);  emitterInitter( emitter1Fire, 0xFF4400 );
+    var emitter1Water   = game.add.emitter(460, 600, 500);  emitterInitter( emitter1Water, 0x0011FF );
+    // Player 2 Spell UI Particles Init
+    var emitter2Air     = game.add.emitter(830, 600, 500);  emitterInitter( emitter2Air, 0xFFFFFF );
+    var emitter2Earth   = game.add.emitter(940, 600, 500);  emitterInitter( emitter2Earth, 0x00DDDD );
+    var emitter2Fire    = game.add.emitter(1030, 600, 500);  emitterInitter( emitter2Fire, 0xFF0000 );
+    var emitter2Water   = game.add.emitter(1130, 600, 500); emitterInitter( emitter2Water, 0x0011FF );
 
-    emitter2Air.setRotation(0, 0);
-    emitter2Air.setAlpha(0.6, 0, 1900);
-    emitter2Air.setScale(0.5, 0.5);
-    emitter2Air.gravity = -80;
 
-    //	false means don't explode all the sprites at once, but instead release at a rate of one particle per 100ms
-    //	The 5000 value is the lifespan of each particle before it's killed
-    emitter2Air.start(false, 2000, 200);
-    
-
-    
     // Instantiate player2 object
     player2 = getRandomFighter(fighters);
     console.log(player2);
