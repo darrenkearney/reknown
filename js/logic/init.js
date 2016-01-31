@@ -15,18 +15,15 @@ function preloadAssets(view){
         game.load.image('player2EnergyUIAsset',     './assets/ui/energy.png');
         game.load.image('player2HiltUIAsset',       './assets/ui/hilt.png');
         game.load.image('player2OutlineUIAsset',    './assets/ui/outline.png');
-        game.load.image('spellAirAsset',            './assets/ui/air.png');
-        game.load.image('spellEarthAsset',          './assets/ui/earth.png');
-        game.load.image('spellFireAsset',           './assets/ui/fire.png');
-        game.load.image('spellWaterAsset',          './assets/ui/water.png');
+        game.load.spritesheet('spellUISheet',       './assets/ui/stonesheet.png', 350, 410);
         game.load.image('softWhiteParticle',        './assets/particles/softwhite.png');
         var energyUICropRect; // used to visually lower health
         
     }
     // Load Map Assets
     else if (view === "MAP"){
-        game.load.image('map', 'assets/map.png');
-        game.load.image('player', 'assets/bat.png');
+        game.load.image('map', 'assets/background/map.png');
+        game.load.image('player', 'assets/items/bat.png');
         game.load.image('enemy', 'assets/items/heart.png');
         var map;
         var enemy;
@@ -118,7 +115,7 @@ function createGame(view){
         // Flip sprite on x-axis
         player2Sprite.anchor.setTo(1,0); // set sprite anchor so we can flip
         player2Sprite.scale.setTo(-1,1); // flip enemy sprite
-        player2Sprite.tint=0xEE5511; // Set tint. uses HEX value, default is 0xFFFFFF (0xRRGGBB when RR = Red, GG = Green, BB = Blue)
+        player2Sprite.tint = 0xEE5511; // Set tint. uses HEX value, default is 0xFFFFFF (0xRRGGBB when RR = Red, GG = Green, BB = Blue)
 
 
         /*******************
@@ -147,36 +144,33 @@ function createGame(view){
         // Add cropRect to crop the HP/energy bar for visually lowering hp
         energyUICropRect1 = new Phaser.Rectangle(0, 0, 200, 200);
         energyUICropRect2 = new Phaser.Rectangle(550, 0, 400, 200);
-        //console.log("crop x : " + (player2EnergyUI.x+player2EnergyUI.width));
-        // Apply crop to image
-        //player1EnergyUI.crop(energyUICropRect1);
-        //player2EnergyUI.crop(energyUICropRect2);
-
+        
+        // Spell UI
+        function spellSheetFactory (spellUI) {
+            spellUI.animations.add('empty', [0], 10, false);
+            spellUI.animations.add('air',   [1], 10, false);
+            spellUI.animations.add('earth', [2], 10, false);
+            spellUI.animations.add('fire',  [3], 10, false);
+            spellUI.animations.add('water', [4], 10, false);
+            spellUI.scale.setTo(0.2,0.2);
+        }
+        
         // Player 1 Spell UI
-        var player1SpellAir         = game.add.sprite(100, 550,'spellAirAsset');
-        var player1SpellEarth       = game.add.sprite(200, 550,'spellEarthAsset');
-        var player1SpellFire        = game.add.sprite(300, 550,'spellFireAsset');
-        var player1SpellWater       = game.add.sprite(400, 550,'spellWaterAsset');
-        player1SpellAir.scale.setTo(0.2,0.2);
-        player1SpellEarth.scale.setTo(0.2,0.2);
-        player1SpellFire.scale.setTo(0.2,0.2);
-        player1SpellWater.scale.setTo(0.2,0.2);
-
-
+        player1SpellUIPosition1 = game.add.sprite(100, 550,'spellUISheet');        spellSheetFactory(player1SpellUIPosition1);
+        player1SpellUIPosition2 = game.add.sprite(200, 550,'spellUISheet');        spellSheetFactory(player1SpellUIPosition2);
+        player1SpellUIPosition3 = game.add.sprite(300, 550,'spellUISheet');        spellSheetFactory(player1SpellUIPosition3);
+        player1SpellUIArray = [ player1SpellUIPosition1, player1SpellUIPosition2, player1SpellUIPosition3];
+        
         // Player 2 Spell UI
-        var player2SpellAir         = game.add.sprite(780, 550,'spellAirAsset');
-        var player2SpellEarth       = game.add.sprite(880, 550,'spellEarthAsset');
-        var player2SpellFire        = game.add.sprite(980, 550,'spellFireAsset');
-        var player2SpellWater       = game.add.sprite(1080, 550,'spellWaterAsset');
-        player2SpellAir.scale.setTo(0.2,0.2);
-        player2SpellEarth.scale.setTo(0.2,0.2);
-        player2SpellFire.scale.setTo(0.2,0.2);
-        player2SpellWater.scale.setTo(0.2,0.2);
-
+        player2SpellUIPosition1 = game.add.sprite(880, 550,'spellUISheet');        spellSheetFactory(player2SpellUIPosition1);
+        player2SpellUIPosition2 = game.add.sprite(980, 550,'spellUISheet');        spellSheetFactory(player2SpellUIPosition2);
+        player2SpellUIPosition3 = game.add.sprite(1080, 550,'spellUISheet');       spellSheetFactory(player2SpellUIPosition3);
+        player2SpellUIArray = [ player2SpellUIPosition1, player2SpellUIPosition2, player2SpellUIPosition3];
+        
         // UI Particles
         var x, y, max;
         function emitterInitter( emitter, tint ) {
-            lifespan     = game.rnd.integerInRange(2000,3000);
+            lifespan = game.rnd.integerInRange(2000,3000);
 
             emitter.makeParticles('softWhiteParticle');
             emitter.setRotation(0, 0);
@@ -243,6 +237,11 @@ function createGame(view){
         /**********************************************************************
         *   RITUAL State CREATE
         **********************************************************************/
+        
+        game.world.setBounds(0, 0, 4096, 3128);
+        
+        game.load.image('ritualBackground', './assets/background/fightback-water.jpg');
+        game.add.sprite(0, 0, 'ritualBackground');
         
         // Set up player character
         playerAttributes = game.cache.getText('playerAttributes');

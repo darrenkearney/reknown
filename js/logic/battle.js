@@ -5,7 +5,9 @@
 var isPlayerAttacking = false;
 var isFightStarted = false;
 var isFightFinished = false;
+var isPlayerCasting = false;
 var startHealthUI = true;
+var castTimer;
 
 // Instantiate Human player object
 var player1 = new CHARACTER(PLAYER);
@@ -22,22 +24,36 @@ function battleLogic() {
     
     // Human Player Input for battle
     if (isFightFinished === false) {
-        // key events
-        if (this.leftKey.justDown || this.WKey.justDown ) {
-            player1.spells.push("W");
-            isPlayerAttacking = true;
-        } else if (this.rightKey.justDown || this.FKey.justDown) {
-            player1.spells.push("F");
-            isPlayerAttacking = true;
-        } else if (this.downKey.justDown || this.EKey.justDown) {
-            player1.spells.push("E");
-            isPlayerAttacking = true;
-        } else if (this.upKey.justDown || this.AKey.justDown) {
-            player1.spells.push("A");
-            isPlayerAttacking = true;
+        if (!isPlayerCasting){
+            // key events
+            if (this.upKey.justDown || this.AKey.justDown) {
+                player1.spells.push("A");
+                isPlayerAttacking = true;
+
+                player1SpellUIArray[player1.spells.length-1].frame = 1; // set to Air spell
+
+            } else if (this.downKey.justDown || this.EKey.justDown) {
+                player1.spells.push("E");
+                isPlayerAttacking = true;
+
+                player1SpellUIArray[player1.spells.length-1].frame = 2; // set to Earth spell
+
+            } else if (this.rightKey.justDown || this.FKey.justDown) {
+                player1.spells.push("F");
+                isPlayerAttacking = true;
+
+                player1SpellUIArray[player1.spells.length-1].frame = 3; // set to Fire spell
+
+            } else if (this.leftKey.justDown || this.WKey.justDown ) {
+                player1.spells.push("W");
+                isPlayerAttacking = true;
+
+                player1SpellUIArray[player1.spells.length-1].frame = 4; // set to Water spell
+            }
         }
     }
 
+    
     // Ready? Fight!
     // Player setting first spell starts the timer
     if (isPlayerAttacking && !isFightStarted) {
@@ -132,17 +148,38 @@ function processAttack(spellCode, attacker, attackerSprite, defender, defenderSp
     }
     // Clear spells
     attacker.spells = [];
+    
+    // Clear UI of spells
+    if (attacker == player1) {
+        isPlayerCasting = true;
+        game.time.events.add(Phaser.Timer.SECOND * 0.5 , removePlayerSpells, this);
+    } else if (attacker == player2) {
+        for (i = 0; i < player1SpellUIArray.length; i++){
+            player2SpellUIArray[i].frame = 0; 
+        }        
+    }
 }
 
+function removePlayerSpells(){
+    for (i = 0; i < player1SpellUIArray.length; i++){
+        player1SpellUIArray[i].frame = 0; 
+    }
+    
+    isPlayerCasting = false;
+}
 // Gets triggered from init.js timer
 function addEnemySpell(){
     randomSpell = spellTypes[game.rnd.integerInRange(0,2)];
     player2.spells.push(randomSpell);
-    timer.repeat();
 }
 
 // Checks conditions for running animations on every update
 function animationChecks() {
+    
+    // Keeps last used spell in last slot until next spell
+    
+    
+    
     this.attackAnimation = function attackAnimation(playerSprite){
         if (playerSprite.animations.name == 'attackHeavy' && playerSprite.animations.frame == 19){
             playerSprite.animations.stop();
@@ -185,4 +222,5 @@ function animationChecks() {
         player2Sprite.animations.play('death');
         player2Sprite.frame = 25;
     }
+    
 }
