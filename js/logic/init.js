@@ -2,6 +2,7 @@
 *  This file instantians and initializises as much as we could fit in here.
 */
 
+var textForSpellsUsed = [];
 function preloadAssets(view){
     
     //  Load Battle Assets 
@@ -45,9 +46,6 @@ function preloadAssets(view){
 }
 
 function createGame(view){
-    
-    
-
     /**********************************************************************
     *   Global CREATE
     **********************************************************************/
@@ -67,8 +65,6 @@ function createGame(view){
     this.EKey = game.input.keyboard.addKey(Phaser.Keyboard.E);
     this.FKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
 
-
-
     // Stop the following keys from propagating up to the browser
     game.input.keyboard.addKeyCapture(
         [Phaser.Keyboard.LEFT,
@@ -83,8 +79,6 @@ function createGame(view){
         ]);
 
     timer = game.time.create(false);
-
-
 
     if (view === "BATTLE") {
         /**********************************************************************
@@ -209,11 +203,12 @@ function createGame(view){
 
         // Instantiate player2 object
         player2 = getRandomFighter(fighters);
-        console.log(player2);
 
         // Add shortcut to player UI
         player1.hitPointsUI = player1EnergyUI;
         player2.hitPointsUI = player2EnergyUI;
+
+        setTextForSpells();
 
         //  Set a TimerEvent to occur after 2 seconds
         // Used for the battle timer
@@ -258,12 +253,45 @@ function createGame(view){
         //      This may be achieved by inventory.push(item.name)
         //      make a copy of inventory, that has the number of that item in possession for that item index?
         //      or make a relational array?
-
     }
 }
 
 function getRandomFighter(fighters) {
     return fighters[Math.floor(Math.random() * fighters.length)];
+}
+
+function addText(x, y, letter){
+    return game.add.text(x, y, letter, {
+        font: "3em Arial",
+        fill: "#ff0044",
+        align: "center"
+    });
+}
+
+function setTextForSpells(){
+    this.attackNumXCoOrdinates = [200, 295, 390, 875, 970, 1070];
+    this.yCoOrdinates = game.world.height - 70;
+    this.yCoOrdinatesForSpells = 0;
+    
+    // Player 1
+    addText(150, this.yCoOrdinates, "A");
+    addText(250, this.yCoOrdinates, "E");
+    addText(345, this.yCoOrdinates, "F");
+    addText(440, this.yCoOrdinates, "W");
+    
+    // Player 2
+    addText(825, this.yCoOrdinates, "⇦");
+    addText(925, this.yCoOrdinates, "⇧");
+    addText(1020, this.yCoOrdinates, "⇩");
+    addText(1120, this.yCoOrdinates, "⇨");
+    
+    //TextForSpellsUsed
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[0], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[1], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[2], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[3], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[4], this.yCoOrdinatesForSpells, ""));
+    textForSpellsUsed.push(addText(this.attackNumXCoOrdinates[5], this.yCoOrdinatesForSpells, ""));
 }
 
 // Todo

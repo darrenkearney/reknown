@@ -17,6 +17,7 @@ var spellEmitter;
 
 // Main
 function battleLogic() {
+    this.yCoOrdinatesForSpells = game.world.height - 200;
     // Process animations
     animationChecks();
     
@@ -26,15 +27,19 @@ function battleLogic() {
         if (this.leftKey.justDown || this.WKey.justDown ) {
             player1.spells.push("W");
             isPlayerAttacking = true;
+            textForSpellsUsed[player1.spells.length - 1].setText("W");
         } else if (this.rightKey.justDown || this.FKey.justDown) {
             player1.spells.push("F");
             isPlayerAttacking = true;
+            textForSpellsUsed[player1.spells.length - 1].setText("F");
         } else if (this.downKey.justDown || this.EKey.justDown) {
             player1.spells.push("E");
             isPlayerAttacking = true;
+            textForSpellsUsed[player1.spells.length - 1].setText("E");
         } else if (this.upKey.justDown || this.AKey.justDown) {
             player1.spells.push("A");
             isPlayerAttacking = true;
+            textForSpellsUsed[player1.spells.length - 1].setText("A");
         }
     }
 
@@ -58,6 +63,9 @@ function battleLogic() {
         }
         // Process attack
         processAttack(playerSpellCode, player1, player1Sprite, player2, player2Sprite);
+        textForSpellsUsed[0].setText("");
+        textForSpellsUsed[1].setText("");
+        textForSpellsUsed[2].setText("");
     }
     
     // When Player reduces Enemy HP to 0 stop fight
@@ -75,10 +83,14 @@ function battleLogic() {
         }
         // Process attack
         processAttack(enemySpellCode, player2, player2Sprite, player1, player1Sprite);
+        
+        textForSpellsUsed[3].setText("");
+        textForSpellsUsed[4].setText("");
+        textForSpellsUsed[5].setText("");
     }
     
     // fill hp bars at start!
-    if (!isFightStarted ) {
+    if (!isFightStarted) {
         if (energyUICropRect1.width <= game.width){
             energyUICropRect1.width += 16;
             player1.hitPointsUI.updateCrop();
@@ -87,7 +99,6 @@ function battleLogic() {
             energyUICropRect2.width += 1;
             player2.hitPointsUI.updateCrop();
         }
-        
     } else if (isFightStarted && startHealthUI) {
         energyUICropRect1.width = 100;
         player1.hitPointsUI.updateCrop();
@@ -138,6 +149,15 @@ function processAttack(spellCode, attacker, attackerSprite, defender, defenderSp
 function addEnemySpell(){
     randomSpell = spellTypes[game.rnd.integerInRange(0,2)];
     player2.spells.push(randomSpell);
+    var characterEntered = "⇦";
+    if(randomSpell == "W"){
+        characterEntered = "⇨";
+    }else if(randomSpell == "E"){
+         characterEntered = "⇧";
+    }else if(randomSpell == "F"){
+        characterEntered = "⇩";
+    }
+    textForSpellsUsed[player2.spells.length + 2].setText(characterEntered);
     timer.repeat();
 }
 
