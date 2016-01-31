@@ -1,11 +1,12 @@
 var isPlayerAttacking = false;
 var isFightStarted = false;
 var isFightFinished = false;
+var startHealthUI = true;
 var spellTypes = ['E','F','W','A']; // Used for enemy random spell selection
 var spellNames = {'E': 'Earth', 'F': 'Fire', 'W': 'Water', 'A': 'Air'};
 
 // Instantiate player objects
-var player1 = new CHARACTER(PLAYER);  
+var player1 = new CHARACTER(PLAYER);
 var player2;
 var fighters = [new CHARACTER(ENEMIES.BASIC), new CHARACTER(ENEMIES.SLOW), new CHARACTER(ENEMIES.LUCKY)];
 
@@ -13,6 +14,7 @@ var fighters = [new CHARACTER(ENEMIES.BASIC), new CHARACTER(ENEMIES.SLOW), new C
 var spellEmitter;
 
 
+// Main
 function battleLogic(){
     // Process animations
     animationChecks();
@@ -87,17 +89,45 @@ function battleLogic(){
         // Process attack
         processAttack(enemySpellCode, player2, player2Sprite, player1, player1Sprite);
     }
+    
+    // fill hp bars at start!
+    if (!isFightStarted ) {
+        if (energyUICropRect1.width <= game.width){
+            energyUICropRect1.width += 16;
+            player1.hitPointsUI.updateCrop();
+        }
+        if (energyUICropRect2.width <= game.width){
+            energyUICropRect2.width += 1;
+            player2.hitPointsUI.updateCrop();
+        }
+        
+    } else if (isFightStarted && startHealthUI) {
+            energyUICropRect1.width = 100;
+            player1.hitPointsUI.updateCrop();
+            energyUICropRect2.width = player2.hitPointsUI.width;
+            player2.hitPointsUI.updateCrop();
+    }    
 }
 
 function processAttack(spellCode, attacker, attackerSprite, defender, defenderSprite){
     // Generic attack function
     // Processes damage done, sets animations and clears spells afterwards
     
+    // Calculate hit
     console.log(spells[spellCode]);
     var hit = 0;
     hit = (Math.floor(Math.random() * spells[spellCode]) + 1);
     defender.hitPoints -= hit;
     console.log("hit = " + hit);
+    console.log("hp bar: ",energyUICropRect1.width, defender.baseHitPoints, hit);
+    
+    // Update healthbar UI
+    //defender.hitPointsUI.updateCrop();    
+    if (hit > 0){
+        energyUICropRect1.width += Math.floor((energyUICropRect1.width / defender.baseHitPoints) * hit);
+        defender.hitPointsUI.updateCrop();
+    }
+    
     // Play Player attack animation based on hit
     if(hit > 5 && defender.hitPoints > 0){
         attackerSprite.animations.play('attackHeavy');   
@@ -173,6 +203,8 @@ function animationChecks() {
     // Battle finish animations
     if (isFightFinished && player1.hitPoints >= 1){
         player1Sprite.animations.play('idle');
+        
+        player2Sprite.animations.play('death');
         player2Sprite.frame = 25;
     }
 }

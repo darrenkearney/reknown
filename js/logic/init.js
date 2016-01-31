@@ -16,6 +16,7 @@ function preloadAssets(view){
         game.load.image('spellFireAsset',           './assets/ui/fire.png');
         game.load.image('spellWaterAsset',          './assets/ui/water.png');
         game.load.image('softWhiteParticle',        './assets/particles/softwhite.png');
+        var energyUICropRect; // used to visually lower health
         
     }
     // Load Map Assets
@@ -64,10 +65,10 @@ function createGame(){
     // Stage bounds
     game.world.setBounds(0, 0, 1280, 720);
     
-    // background
+    // background image
     game.add.sprite(0, 0, 'battleBackground');
     
-    // player 1
+    // player 1 spritesheet
     player1Sprite = game.add.sprite(150, 170, 'player1Spritesheet');
     // player 1 animations
     player1Sprite.animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 10, true);
@@ -77,7 +78,7 @@ function createGame(){
     player1Sprite.animations.add('death', [20,21,22,23,24,25], 5, true); // using same frames as hurt in leue of death animation
     
     // Add enemy sprite (Temporarily using player1 spritesheet until new assets are imported)
-    player2Sprite = game.add.sprite(720, 170, 'player2Spritesheet');
+    player2Sprite = game.add.sprite(760, 140, 'player2Spritesheet');
     // player 2 animations
     player2Sprite.animations.add('idle', [0,1,2,3,4,5,6,7,8,9], 10, true);
     player2Sprite.animations.add('attackLight', [10,11,12,13,14,15,16,17,18,19], 10, true);
@@ -89,7 +90,11 @@ function createGame(){
     player2Sprite.scale.setTo(-1,1); // flip enemy sprite
     player2Sprite.tint=0xEE5511; // Set tint. uses HEX value, default is 0xFFFFFF (0xRRGGBB when RR = Red, GG = Green, BB = Blue)
     
-    // UI
+    
+    /*******************
+    *   UI Elements
+    */
+    
     // Player1 Energy UI
     var player1EnergyUI         = game.add.sprite(110, 20,'player1EnergyUIAsset');
     var player1HiltUI           = game.add.sprite(110, 20,'player1HiltUIAsset');
@@ -97,6 +102,25 @@ function createGame(){
     player1EnergyUI.scale.setTo(0.4,0.4);
     player1HiltUI.scale.setTo(0.4,0.4);
     player1OutlineUI.scale.setTo(0.4,0.4);
+
+    // Player2 Energy UI
+    var player2EnergyUI         = game.add.sprite(game.world.width - 540, 20,'player1EnergyUIAsset');
+    var player2HiltUI           = game.add.sprite(game.world.width - 540, 20,'player1HiltUIAsset');
+    var player2OutlineUI        = game.add.sprite(game.world.width - 540, 20,'player1OutlineUIAsset');
+    player2EnergyUI.anchor.setTo(1,0); // set sprite anchor so we can flip
+    player2EnergyUI.scale.setTo(-0.4,0.4); // flip sprite
+    player2HiltUI.anchor.setTo(1,0); 
+    player2HiltUI.scale.setTo(-0.4,0.4);
+    player2OutlineUI.anchor.setTo(1,0);
+    player2OutlineUI.scale.setTo(-0.4,0.4);
+    
+    // Add cropRect to crop the HP/energy bar for visually lowering hp
+//    energyUICropRect1 = new Phaser.Rectangle(0, 0, 200, 200);
+//    energyUICropRect2 = new Phaser.Rectangle(550, 0, 400, 200);
+//    console.log("crop x : " + (player2EnergyUI.x+player2EnergyUI.width));
+    // Apply crop to image
+    //player1EnergyUI.crop(energyUICropRect1);
+    //player2EnergyUI.crop(energyUICropRect2);
     
     // Player 1 Spell UI
     var player1SpellAir         = game.add.sprite(100, 550,'spellAirAsset');
@@ -109,31 +133,15 @@ function createGame(){
     player1SpellWater.scale.setTo(0.2,0.2);
     
     // UI Particles
-    
-    var emitter1 = game.add.emitter(160, 600, 500);
-    
-    emitter1.makeParticles('softWhiteParticle');
-
-    emitter1.setRotation(0, 0);
-    emitter1.setAlpha(0.6, 0, 1900);
-    emitter1.setScale(0.5, 0.5);
-    emitter1.gravity = -80;
-
+    var emitter1Air = game.add.emitter(160, 600, 500);
+    emitter1Air.makeParticles('softWhiteParticle');
+    emitter1Air.setRotation(0, 0);
+    emitter1Air.setAlpha(0.6, 0, 1900);
+    emitter1Air.setScale(0.5, 0.5);
+    emitter1Air.gravity = -80;
     //	false means don't explode all the sprites at once, but instead release at a rate of one particle per 100ms
     //	The 5000 value is the lifespan of each particle before it's killed
-    emitter1.start(false, 2000, 50);
-    
-    
-    // Player2 Energy UI
-    var player2EnergyUI         = game.add.sprite(game.world.width - 540, 20,'player1EnergyUIAsset');
-    var player2HiltUI           = game.add.sprite(game.world.width - 540, 20,'player1HiltUIAsset');
-    var player2OutlineUI        = game.add.sprite(game.world.width - 540, 20,'player1OutlineUIAsset');
-    player2EnergyUI.anchor.setTo(1,0); // set sprite anchor so we can flip
-    player2EnergyUI.scale.setTo(-0.4,0.4); // flip sprite
-    player2HiltUI.anchor.setTo(1,0); 
-    player2HiltUI.scale.setTo(-0.4,0.4);
-    player2OutlineUI.anchor.setTo(1,0);
-    player2OutlineUI.scale.setTo(-0.4,0.4);
+    emitter1Air.start(false, 2000, 200);
     
     // Player 2 Spell UI
     var player2SpellAir         = game.add.sprite(780, 550,'spellAirAsset');
@@ -145,10 +153,29 @@ function createGame(){
     player2SpellFire.scale.setTo(0.2,0.2);
     player2SpellWater.scale.setTo(0.2,0.2);
     
-        
+    // UI Particles
+    var emitter2Air = game.add.emitter(840, 600, 500);
+    
+    emitter2Air.makeParticles('softWhiteParticle');
+
+    emitter2Air.setRotation(0, 0);
+    emitter2Air.setAlpha(0.6, 0, 1900);
+    emitter2Air.setScale(0.5, 0.5);
+    emitter2Air.gravity = -80;
+
+    //	false means don't explode all the sprites at once, but instead release at a rate of one particle per 100ms
+    //	The 5000 value is the lifespan of each particle before it's killed
+    emitter2Air.start(false, 2000, 200);
+    
+
+    
     // Instantiate player2 object
     player2 = getRandomFighter(fighters);
     console.log(player2);
+    
+    // Add shortcut to player UI
+    player1.hitPointsUI = player1EnergyUI;
+    player2.hitPointsUI = player2EnergyUI;
 
     //  Set a TimerEvent to occur after 2 seconds
     // Used for the battle timer

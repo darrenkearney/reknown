@@ -6,7 +6,9 @@
 function CHARACTER(kwargs) {
     this.name =         kwargs.name || '';
     this.desc =         kwargs.desc || '';
-    this.hitPoints =    kwargs.hitPoints || 5;
+    this.baseHitPoints= kwargs.baseHitPoints || 5;
+    this.hitPoints =    kwargs.hitPoints || this.baseHitPoints;
+    this.hitPointsUI =  kwargs.hitPointsUI || '';
     this.experience =   kwargs.experience || 1;
     this.level =        kwargs.level || 1;
     this.agility =      kwargs.agility || 1;
@@ -23,6 +25,7 @@ function CHARACTER(kwargs) {
 
 var PLAYER = {
     'name': "Basic Player",
+    'baseHitPoints': 20,
     'hitPoints': 20,
     'strength': 8,
     'agility': 5,
@@ -32,6 +35,7 @@ var PLAYER = {
 var ENEMIES = {
     'BASIC': {
         'name': "Basic Fighter",
+        'baseHitPoints': 20,
         'hitPoints': 20,
         'strength': 8,
         'agility': 5,
@@ -39,6 +43,7 @@ var ENEMIES = {
     },
     'SLOW': {
         'name': "Slow Fighter",
+        'baseHitPoints': 20,
         'hitPoints': 20,
         'strength': 8,
         'agility': 8,
@@ -46,6 +51,7 @@ var ENEMIES = {
     },
     'LUCKY': {
         'name': "Lucky Fighter",
+        'baseHitPoints': 10,
         'hitPoints': 10,
         'strength': 2,
         'agility': 5,
