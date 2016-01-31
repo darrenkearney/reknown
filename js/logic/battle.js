@@ -73,7 +73,7 @@ function battleLogic() {
         isFightStarted = false;
         isPlayerAttacking = false;
         isFightFinished = true;
-        timer.stop;
+        timer.stop();
     }
     // While Enemy is alive, it's kickin'!
     else if(player2.spells.length > 2 ){
@@ -158,7 +158,6 @@ function addEnemySpell(){
         characterEntered = "⇩";
     }
     textForSpellsUsed[player2.spells.length + 2].setText(characterEntered);
-    timer.repeat();
 }
 
 // Checks conditions for running animations on every update
