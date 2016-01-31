@@ -21,24 +21,32 @@ function CHARACTER(kwargs) {
     };
 }
 
+var PLAYER = {
+    'name': "Basic Player",
+    'hitPoints': 20,
+    'strength': 8,
+    'agility': 5,
+    'luck': 30
+}
+
 var ENEMIES = {
     'BASIC': {
         'name': "Basic Fighter",
-        'hitPoints': 10,
+        'hitPoints': 20,
         'strength': 8,
         'agility': 5,
         'luck': 30
     },
     'SLOW': {
         'name': "Slow Fighter",
-        'hitPoints': 10,
+        'hitPoints': 20,
         'strength': 8,
         'agility': 8,
         'luck': 30
     },
     'LUCKY': {
         'name': "Lucky Fighter",
-        'hitPoints': 5,
+        'hitPoints': 10,
         'strength': 2,
         'agility': 5,
         'luck': 90
