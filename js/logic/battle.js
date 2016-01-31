@@ -19,16 +19,16 @@ function battleLogic() {
     // Human Player Input for battle
     if (isFightFinished === false) {
         // key events
-        if (this.leftKey.justDown) {
+        if (this.leftKey.justDown || this.WKey.justDown ) {
             player1.spells.push("W");
             isPlayerAttacking = true;
-        } else if (this.rightKey.justDown) {
+        } else if (this.rightKey.justDown || this.FKey.justDown) {
             player1.spells.push("F");
             isPlayerAttacking = true;
-        } else if (this.downKey.justDown) {
+        } else if (this.downKey.justDown || this.EKey.justDown) {
             player1.spells.push("E");
             isPlayerAttacking = true;
-        } else if (this.upKey.justDown) {
+        } else if (this.upKey.justDown || this.AKey.justDown) {
             player1.spells.push("A");
             isPlayerAttacking = true;
         }
