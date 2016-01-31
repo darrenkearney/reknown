@@ -4,20 +4,22 @@ var rightKey;
 var spaceKey;
 var timer;
 var mySpells = [];
-var view = "BATTLE";  // BATTLE, MAP
+var view = "BATTLE";  // BATTLE, MAP, RITUAL
 
 function preload() {
     preloadAssets(view);
 }
 
 function create() {
-    createGame();
+    createGame(view);
 }
 
 function update(){
     if(view === "MAP"){
         mapLogic();
-    }else if(view === "BATTLE"){
+    } else if (view === "BATTLE") {
         battleLogic();
+    } else if (view === "RITUAL") {
+        ritualLogic();    
     }
 }

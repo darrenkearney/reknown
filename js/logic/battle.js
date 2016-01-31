@@ -1,9 +1,13 @@
+/*
+*   Description: This controls the logic and animations for the fight in the BATTLE view.
+*/
+
 var isPlayerAttacking = false;
 var isFightStarted = false;
 var isFightFinished = false;
 var startHealthUI = true;
 
-// Instantiate player objects
+// Instantiate Human player object
 var player1 = new CHARACTER(PLAYER);
 var player2;
 var fighters = [new CHARACTER(ENEMIES.BASIC), new CHARACTER(ENEMIES.SLOW), new CHARACTER(ENEMIES.LUCKY)];
