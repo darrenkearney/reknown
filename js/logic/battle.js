@@ -22,22 +22,22 @@ function battleLogic() {
     // Human Player Input for battle
     if (isFightFinished === false) {
         // key events
-        if (this.leftKey.justDown) {
+        if (this.leftKey.justDown || this.WKey.justDown ) {
             console.log("Water");
             player1.spells.push("W");
             console.log(player1.spells);
             isPlayerAttacking = true;
-        } else if (this.rightKey.justDown) {
+        } else if (this.rightKey.justDown || this.FKey.justDown) {
             console.log("Fire");
             player1.spells.push("F");
             console.log(player1.spells);
             isPlayerAttacking = true;
-        } else if (this.downKey.justDown) {
+        } else if (this.downKey.justDown || this.EKey.justDown) {
             console.log("Earth");
             player1.spells.push("E");
             console.log(player1.spells);
             isPlayerAttacking = true;
-        } else if (this.upKey.justDown) {
+        } else if (this.upKey.justDown || this.AKey.justDown) {
             console.log("Air");
             player1.spells.push("A");
             console.log(player1.spells);

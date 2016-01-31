@@ -50,9 +50,25 @@ function createGame(){
     this.upKey = game.input.keyboard.addKey(Phaser.Keyboard.UP);
     this.downKey = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
     this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-
+    this.AKey = game.input.keyboard.addKey(Phaser.Keyboard.A);
+    this.WKey = game.input.keyboard.addKey(Phaser.Keyboard.W);
+    this.EKey = game.input.keyboard.addKey(Phaser.Keyboard.E);
+    this.FKey = game.input.keyboard.addKey(Phaser.Keyboard.F);
+    
+    
+    
     // Stop the following keys from propagating up to the browser
-    game.input.keyboard.addKeyCapture([Phaser.Keyboard.LEFT, Phaser.Keyboard.RIGHT, Phaser.Keyboard.SPACEBAR, Phaser.Keyboard.UP, Phaser.Keyboard.DOWN]);
+    game.input.keyboard.addKeyCapture(
+        [Phaser.Keyboard.LEFT,
+         Phaser.Keyboard.RIGHT,
+         Phaser.Keyboard.SPACEBAR,
+         Phaser.Keyboard.UP,
+         Phaser.Keyboard.DOWN,
+         Phaser.Keyboard.A,
+         Phaser.Keyboard.W,
+         Phaser.Keyboard.E,
+         Phaser.Keyboard.F
+        ]);
     
     timer = game.time.create(false);
 
