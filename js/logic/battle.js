@@ -2,6 +2,7 @@
 *   Description: This controls the logic and animations for the fight in the BATTLE view.
 */
 
+var isTwoPlayerMode = false;
 var isPlayerAttacking = false;
 var isFightStarted = false;
 var isFightFinished = false;
@@ -19,11 +20,10 @@ var spellEmitter;
 
 // Main
 function battleLogic() {
-    this.yCoOrdinatesForSpells = game.world.height - 200;
     // Process animations
     animationChecks();
     
-    // Human Player Input for battle
+    // Human Player 1 Input for battle
     if (isFightFinished === false) {
         if (!isPlayerCasting){
             // key events
@@ -53,6 +53,39 @@ function battleLogic() {
             }
         }
     }
+    
+    // Human Player 2 Input for battle
+    if (isFightFinished === false && isTwoPlayerMode) {
+        if (!isPlayerCasting){
+            // key events
+            if (this.upKey.justDown) {
+                player2.spells.push("A");
+                isPlayerAttacking = true;
+
+                player2SpellUIArray[player2.spells.length-1].frame = 1; // set to Air spell
+
+            } else if (this.downKey.justDown) {
+                player2.spells.push("E");
+                isPlayerAttacking = true;
+
+                player2SpellUIArray[player2.spells.length-1].frame = 2; // set to Earth spell
+
+            } else if (this.rightKey.justDown) {
+                player2.spells.push("F");
+                isPlayerAttacking = true;
+
+                player2SpellUIArray[player2.spells.length-1].frame = 3; // set to Fire spell
+
+            } else if (this.leftKey.justDown) {
+                player2.spells.push("W");
+                isPlayerAttacking = true;
+
+                player2SpellUIArray[player2.spells.length-1].frame = 4; // set to Water spell
+            }
+        }
+    }
+    
+    
 
     
     // Ready? Fight!
@@ -75,9 +108,6 @@ function battleLogic() {
         }
         // Process attack
         processAttack(playerSpellCode, player1, player1Sprite, player2, player2Sprite);
-        textForSpellsUsed[0].setText("");
-        textForSpellsUsed[1].setText("");
-        textForSpellsUsed[2].setText("");
     }
     
     // When Player reduces Enemy HP to 0 stop fight
@@ -89,16 +119,13 @@ function battleLogic() {
     }
     // While Enemy is alive, it's kickin'!
     else if(player2.spells.length > 2 ){
+        
         var enemySpellCode = '';
         for(var j = 0; j < player2.spells.length; j++){
             enemySpellCode += player2.spells[j];
         }
         // Process attack
         processAttack(enemySpellCode, player2, player2Sprite, player1, player1Sprite);
-        
-        textForSpellsUsed[3].setText("");
-        textForSpellsUsed[4].setText("");
-        textForSpellsUsed[5].setText("");
     }
     
     // fill hp bars at start!
@@ -176,8 +203,9 @@ function removePlayerSpells(){
 }
 // Gets triggered from init.js timer
 function addEnemySpell(){
-    randomSpell = spellTypes[game.rnd.integerInRange(0,2)];
+    randomSpell = spellTypes[game.rnd.integerInRange(0,2)]; // randomSpell 
     player2.spells.push(randomSpell);
+    player2SpellUIArray[player2.spells.length-1].frame = spellTypes.indexOf(randomSpell); 
 }
 
 // Checks conditions for running animations on every update
@@ -204,10 +232,14 @@ function animationChecks() {
             playerSprite.animations.play('idle'); 
         }
     }
-    this.deathAnimation = function deathAnimation(player, playerSprite){
-        if (playerSprite.animations.name == 'death' && playerSprite.animations.frame == 25 && player.hitPoints <= 0){
+    this.deathAnimation = function deathAnimation(player, playerSprite, playerDeathSprite){
+        
+        if (playerDeathSprite.animations.name == 'death' && playerDeathSprite.animations.frame == 24 && player.hitPoints <= 0){
            playerSprite.animations.stop(); 
+           playerDeathSprite.animations.stop(); 
+           playerDeathSprite.frame = 24;
         }
+        
     }
     
     // Only animate attack once
@@ -219,15 +251,20 @@ function animationChecks() {
     this.hurtAnimation(player2Sprite);
     
     // Only animate death once (needs to be updated with death animation frames when asset is refactored)
-    this.deathAnimation(player1, player1Sprite);
-    this.deathAnimation(player2, player2Sprite);
+    this.deathAnimation(player1, player1Sprite, player1DeathSprite);
+    this.deathAnimation(player2, player2Sprite, player2DeathSprite);
     
     // Battle finish animations
     if (isFightFinished && player1.hitPoints >= 1){
         player1Sprite.animations.play('idle');
         
-        player2Sprite.animations.play('death');
-        player2Sprite.frame = 25;
+        player2DeathSprite.animations.play('death');
+        player2DeathSprite.frame = 25;
+    } else if (isFightFinished && player1.hitPoints >= 1) {
+        player2Sprite.animations.play('idle');
+        
+        player1DeathSprite.animations.play('death');
+        player1DeathSprite.frame = 25;
     }
     
 }
