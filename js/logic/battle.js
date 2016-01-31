@@ -102,10 +102,10 @@ function battleLogic(){
         }
         
     } else if (isFightStarted && startHealthUI) {
-            energyUICropRect1.width = 100;
-            player1.hitPointsUI.updateCrop();
-            energyUICropRect2.width = player2.hitPointsUI.width;
-            player2.hitPointsUI.updateCrop();
+        energyUICropRect1.width = 100;
+        player1.hitPointsUI.updateCrop();
+        energyUICropRect2.width = player2.hitPointsUI.width;
+        player2.hitPointsUI.updateCrop();
     }    
 }
 
@@ -115,16 +115,20 @@ function processAttack(spellCode, attacker, attackerSprite, defender, defenderSp
     
     // Calculate hit
     console.log(spells[spellCode]);
-    var hit = 0;
-    hit = (Math.floor(Math.random() * spells[spellCode]) + 1);
+    var hit = (Math.floor(Math.random() * spells[spellCode]) + 1);
     defender.hitPoints -= hit;
     console.log("hit = " + hit);
-    console.log("hp bar: ",energyUICropRect1.width, defender.baseHitPoints, hit);
     
     // Update healthbar UI
     //defender.hitPointsUI.updateCrop();    
     if (hit > 0){
-        energyUICropRect1.width += Math.floor((energyUICropRect1.width / defender.baseHitPoints) * hit);
+        if(defender.hitPoints < 1){
+            defender.hitPointsUI.width = 0;
+        }else if(defender.hitPointsUI.width > 0){
+            defender.hitPointsUI.width =  409.6 * (defender.hitPoints / defender.baseHitPoints);
+        }else{
+            defender.hitPointsUI.width =  -409.6 * (defender.hitPoints / defender.baseHitPoints);
+        }
         defender.hitPointsUI.updateCrop();
     }
     
