@@ -19,6 +19,7 @@ var spellEmitter;
 
 // Main
 function battleLogic() {
+    this.yCoOrdinatesForSpells = game.world.height - 200;
     // Process animations
     animationChecks();
     
@@ -74,6 +75,9 @@ function battleLogic() {
         }
         // Process attack
         processAttack(playerSpellCode, player1, player1Sprite, player2, player2Sprite);
+        textForSpellsUsed[0].setText("");
+        textForSpellsUsed[1].setText("");
+        textForSpellsUsed[2].setText("");
     }
     
     // When Player reduces Enemy HP to 0 stop fight
@@ -81,7 +85,7 @@ function battleLogic() {
         isFightStarted = false;
         isPlayerAttacking = false;
         isFightFinished = true;
-        timer.stop;
+        timer.stop();
     }
     // While Enemy is alive, it's kickin'!
     else if(player2.spells.length > 2 ){
@@ -91,10 +95,14 @@ function battleLogic() {
         }
         // Process attack
         processAttack(enemySpellCode, player2, player2Sprite, player1, player1Sprite);
+        
+        textForSpellsUsed[3].setText("");
+        textForSpellsUsed[4].setText("");
+        textForSpellsUsed[5].setText("");
     }
     
     // fill hp bars at start!
-    if (!isFightStarted ) {
+    if (!isFightStarted) {
         if (energyUICropRect1.width <= game.width){
             energyUICropRect1.width += 16;
             player1.hitPointsUI.updateCrop();
@@ -103,7 +111,6 @@ function battleLogic() {
             energyUICropRect2.width += 1;
             player2.hitPointsUI.updateCrop();
         }
-        
     } else if (isFightStarted && startHealthUI) {
         energyUICropRect1.width = 100;
         player1.hitPointsUI.updateCrop();
