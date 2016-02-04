@@ -1,7 +1,7 @@
 # reknown
 Global Game Jam 2016 entry
 
-A browser based HTML 5 game built with Phaser.js framework.  engine and game logic.
+A browser based HTML 5 game built with Phaser.js framework for the 2016 Global Game Jam.
 
 [Link to Renown's game profile on Global Game Jam](http://globalgamejam.org/2016/games/renown)
 
