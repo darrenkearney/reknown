@@ -10,7 +10,7 @@ var startHealthUI = true;
 var castTimer;
 
 // Instantiate Human player object
-var player1 = new CHARACTER(PLAYER);
+var player1 = new CHARACTER(GERRY);
 var player2;
 var fighters = [new CHARACTER(ENEMIES.BASIC), new CHARACTER(ENEMIES.SLOW), new CHARACTER(ENEMIES.LUCKY)];
 
@@ -34,6 +34,8 @@ function battleLogic() {
                 player1SpellUIArray[player1.spells.length-1].frame = 1; 
                 // update emitter particle tint
                 updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]); 
+                
+                console.log('spells = ' + player1.spells);
 
             } else if (this.downKey.justDown || this.EKey.justDown) {
                 player1.spells.push("E");
@@ -41,7 +43,10 @@ function battleLogic() {
                 // set to Earth spell
                 player1SpellUIArray[player1.spells.length-1].frame = 2; 
                 // update emitter particle tint
-                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]); 
+                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]);
+                
+                console.log('spells = ' + player1.spells);
+                
 
             } else if (this.rightKey.justDown || this.FKey.justDown) {
                 player1.spells.push("F");
@@ -49,7 +54,9 @@ function battleLogic() {
                 // set to Fire spell
                 player1SpellUIArray[player1.spells.length-1].frame = 3;
                 // update emitter particle tint
-                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]); 
+                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]);
+                
+                console.log('spells = ' + player1.spells);
 
             } else if (this.leftKey.justDown || this.WKey.justDown ) {
                 player1.spells.push("W");
@@ -57,7 +64,9 @@ function battleLogic() {
                 // set to Water spell
                 player1SpellUIArray[player1.spells.length-1].frame = 4;
                 // update emitter particle tint
-                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]); 
+                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]);
+                
+                console.log('spells = ' + player1.spells);
             }
         }
     }
@@ -139,6 +148,8 @@ function processAttack(spellCode, attacker, attackerSprite, defender, defenderSp
     // Calculate hit
     var hit = (Math.floor(Math.random() * spells[spellCode]) + 1);
     defender.hitPoints -= hit;
+    
+    console.log('attack damage = ' + hit );
     
     // Update healthbar UI
     if (hit > 0){
