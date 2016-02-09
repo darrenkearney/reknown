@@ -21,35 +21,43 @@ var spellEmitter;
 function battleLogic() {
     this.yCoOrdinatesForSpells = game.world.height - 200;
     // Process animations
-    animationChecks();
+    animationChecks(); // see battleUI.js
     
-    // Human Player Input for battle
+    // Human Player Keyboard Input/controls for battle
     if (isFightFinished === false) {
         if (!isPlayerCasting){
             // key events
             if (this.upKey.justDown || this.AKey.justDown) {
                 player1.spells.push("A");
                 isPlayerAttacking = true;
-
-                player1SpellUIArray[player1.spells.length-1].frame = 1; // set to Air spell
+                // set to Air spell
+                player1SpellUIArray[player1.spells.length-1].frame = 1; 
+                // update emitter particle tint
+                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]); 
 
             } else if (this.downKey.justDown || this.EKey.justDown) {
                 player1.spells.push("E");
                 isPlayerAttacking = true;
-
-                player1SpellUIArray[player1.spells.length-1].frame = 2; // set to Earth spell
+                // set to Earth spell
+                player1SpellUIArray[player1.spells.length-1].frame = 2; 
+                // update emitter particle tint
+                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]); 
 
             } else if (this.rightKey.justDown || this.FKey.justDown) {
                 player1.spells.push("F");
                 isPlayerAttacking = true;
-
-                player1SpellUIArray[player1.spells.length-1].frame = 3; // set to Fire spell
+                // set to Fire spell
+                player1SpellUIArray[player1.spells.length-1].frame = 3;
+                // update emitter particle tint
+                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]); 
 
             } else if (this.leftKey.justDown || this.WKey.justDown ) {
                 player1.spells.push("W");
                 isPlayerAttacking = true;
-
-                player1SpellUIArray[player1.spells.length-1].frame = 4; // set to Water spell
+                // set to Water spell
+                player1SpellUIArray[player1.spells.length-1].frame = 4;
+                // update emitter particle tint
+                updateEmitterTint(player1SpellUIArray[player1.spells.length-1],player1SpellUIEmitterArray[player1.spells.length-1]); 
             }
         }
     }
@@ -95,6 +103,7 @@ function battleLogic() {
     }
     
     // fill hp bars at start!
+    /*
     if (!isFightStarted) {
         if (energyUICropRect1.width <= game.width){
             energyUICropRect1.width += 16;
@@ -109,7 +118,19 @@ function battleLogic() {
         player1.hitPointsUI.updateCrop();
         energyUICropRect2.width = player2.hitPointsUI.width;
         player2.hitPointsUI.updateCrop();
-    }
+    }*/
+}
+
+// Gets triggered from init.js timer
+function addEnemySpell(){
+    // Logic
+    index = game.rnd.integerInRange(0,3);
+    randomSpell = spellTypes[index];
+    player2.spells.push(randomSpell);
+    
+    // UI
+    player2SpellUIArray[player2.spells.length-1].frame = (index+1);
+    updateEmitterTint(player2SpellUIArray[player2.spells.length-1],player2SpellUIEmitterArray[player2.spells.length-1]); 
 }
 
 // Generic attack function
@@ -152,75 +173,11 @@ function processAttack(spellCode, attacker, attackerSprite, defender, defenderSp
     // Clear UI of spells
     if (attacker == player1) {
         isPlayerCasting = true;
-        game.time.events.add(Phaser.Timer.SECOND * 0.5 , removePlayerSpells, this);
+        // make it so player1 is delayed in next attack
+        game.time.events.add(Phaser.Timer.SECOND * 0.5 , clearPlayer1SpellUI, this);
     } else if (attacker == player2) {
-        for (i = 0; i < player1SpellUIArray.length; i++){
-            player2SpellUIArray[i].frame = 0; 
-        }        
+        game.time.events.add(Phaser.Timer.SECOND * 0.8 , clearPlayer2SpellUI, this);
+        //clearPlayer2SpellUI();
     }
 }
 
-function removePlayerSpells(){
-    for (i = 0; i < player1SpellUIArray.length; i++){
-        player1SpellUIArray[i].frame = 0; 
-    }
-    
-    isPlayerCasting = false;
-}
-// Gets triggered from init.js timer
-function addEnemySpell(){
-    randomSpell = spellTypes[game.rnd.integerInRange(0,2)];
-    player2.spells.push(randomSpell);
-}
-
-// Checks conditions for running animations on every update
-function animationChecks() {
-    
-    // Keeps last used spell in last slot until next spell
-    
-    
-    
-    this.attackAnimation = function attackAnimation(playerSprite){
-        if (playerSprite.animations.name == 'attackHeavy' && playerSprite.animations.frame == 19){
-            playerSprite.animations.stop();
-            playerSprite.animations.play('idle'); 
-        }
-        
-        if (playerSprite.animations.name == 'attackLight' && playerSprite.animations.frame == 19){
-            playerSprite.animations.stop();
-            playerSprite.animations.play('idle'); 
-        }
-    }
-    this.hurtAnimation = function hurtAnimation(playerSprite){
-        if (playerSprite.animations.name == 'hurt' && playerSprite.animations.frame == 25 ){
-            playerSprite.animations.stop(); 
-            playerSprite.animations.play('idle'); 
-        }
-    }
-    this.deathAnimation = function deathAnimation(player, playerSprite){
-        if (playerSprite.animations.name == 'death' && playerSprite.animations.frame == 25 && player.hitPoints <= 0){
-           playerSprite.animations.stop(); 
-        }
-    }
-    
-    // Only animate attack once
-    this.attackAnimation(player1Sprite);
-    this.attackAnimation(player2Sprite);
-    
-    // Only animate hurt once
-    this.hurtAnimation(player1Sprite);
-    this.hurtAnimation(player2Sprite);
-    
-    // Only animate death once (needs to be updated with death animation frames when asset is refactored)
-    this.deathAnimation(player1, player1Sprite);
-    this.deathAnimation(player2, player2Sprite);
-    
-    // Battle finish animations
-    if (isFightFinished && player1.hitPoints >= 1){
-        player1Sprite.animations.play('idle');
-        
-        player2Sprite.animations.play('death');
-        player2Sprite.frame = 25;
-    }
-    
-}

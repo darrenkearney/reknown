@@ -184,17 +184,22 @@ function createGame(view){
         }
 
         // Player 1 Spell UI Particles Init
-        var emitter1Air     = game.add.emitter(160, 600, 500 ); emitterInitter( emitter1Air, 0xFFFFFF );
-        var emitter1Earth   = game.add.emitter(260, 600, 500);  emitterInitter( emitter1Earth, 0x00DDDD );
-        var emitter1Fire    = game.add.emitter(360, 600, 500);  emitterInitter( emitter1Fire, 0xFF4400 );
-        var emitter1Water   = game.add.emitter(460, 600, 500);  emitterInitter( emitter1Water, 0x0011FF );
+        var emitter1A = game.add.emitter(140, 600, 500 ); emitterInitter( emitter1A, 0x000000 );
+        var emitter1B = game.add.emitter(245, 600, 500);  emitterInitter( emitter1B, 0x000000 );
+        var emitter1C = game.add.emitter(350, 600, 500);  emitterInitter( emitter1C, 0x000000 );
+        player1SpellUIEmitterArray = [emitter1A, emitter1B, emitter1C];
+        
         // Player 2 Spell UI Particles Init
-        var emitter2Air     = game.add.emitter(830, 600, 500);  emitterInitter( emitter2Air, 0xFFFFFF );
-        var emitter2Earth   = game.add.emitter(940, 600, 500);  emitterInitter( emitter2Earth, 0x00DDDD );
-        var emitter2Fire    = game.add.emitter(1030, 600, 500);  emitterInitter( emitter2Fire, 0xFF0000 );
-        var emitter2Water   = game.add.emitter(1130, 600, 500); emitterInitter( emitter2Water, 0x0011FF );
-
-
+        var emitter2A = game.add.emitter(920, 600, 500);  emitterInitter( emitter2A, 0xFFFFFF );
+        var emitter2B = game.add.emitter(1020, 600, 500); emitterInitter( emitter2B, 0x00DDDD );
+        var emitter2C = game.add.emitter(1120, 600, 500); emitterInitter( emitter2C, 0xFF0000 );
+        player2SpellUIEmitterArray = [emitter2A, emitter2B, emitter2C];
+          
+        // color array, matched with ui spritesheet [empty, air, earth, fire, water]
+        // used with updateEmitterTint function
+        particleTint = [0xFFFFFF, 0xFFFFFF, 0x00DDDD, 0xFF0000, 0x0011FF];
+        
+            
         // Instantiate player2 object
         player2 = getRandomFighter(fighters);
 

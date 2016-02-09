@@ -1,5 +1,5 @@
-var spellTypes = ['E', 'F', 'W', 'A']; // Used for enemy random spell selection
-var spellNames = {'E': 'Earth', 'F': 'Fire', 'W': 'Water', 'A': 'Air'};
+var spellTypes = ['A', 'E', 'F', 'W']; // Used for enemy random spell selection
+var spellNames = { 'A': 'Air', 'E': 'Earth', 'F': 'Fire', 'W': 'Water'};
 
 var spells = {
     "FFF": 3,
