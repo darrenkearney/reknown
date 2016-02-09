@@ -1,7 +1,6 @@
 /*
 *   Description: This file sets up the character class used in the game.
 *   Usage: CHARACTER takes arguments as an object of {key: word} pairs.
-*   Author: Darren Kearney
 */
 function CHARACTER(kwargs) {
     this.name =         kwargs.name || '';

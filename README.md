@@ -16,8 +16,21 @@ A browser based HTML 5 game built with Phaser.js framework for the 2016 Global G
 
 [@paulofla](https://github.com/paulofla) - Programming
 
-[@darrenknet](https://github.com/darrenknet) - Programming
+[@darrenkearney](https://github.com/darrenkearney) - Programming
 
-Gonz0 - Art, Audio
+[Gonz0](http://globalgamejam.org/users/gonz0) - Art, Audio
 
-David j - Art
+[David j](http://globalgamejam.org/users/david-j) - Art
+
+
+### License
+
+Licensed according to Global Game Jam rules.
+
+![Creative Commons License][license-img]
+This work is licensed under a [Creative Commons Attribution-NonCommercial-ShareAlike 3.0 Unported License][license-link]
+
+[http://globalgamejam.org/faq](http://globalgamejam.org/faq "Global Game Jam's FAQ")
+
+[license-link]: http://creativecommons.org/licenses/by-nc-sa/3.0/
+[license-img]: https://i.creativecommons.org/l/by-nc-sa/3.0/88x31.png "Creative Commons License"

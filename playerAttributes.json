@@ -1,7 +1,0 @@
-{
-    name: 'New Player',
-    desc: 'A new player',
-    hitPoints: 5,
-    experience: 0,
-    ritualPower: 0
-}
