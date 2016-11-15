@@ -1,5 +1,5 @@
-# renown
-Global Game Jam 2016 entry
+# reknown
+Global Game Jam 2016 entry (down as renown on globalgamejam.org)
 
 A browser based HTML 5 game built with Phaser.js framework for the 2016 Global Game Jam.
 
